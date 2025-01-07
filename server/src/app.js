@@ -53,6 +53,6 @@ app.get("/quotes", async (req, res) => {
 });
 
 // Start the server
-app.listen(3010, () => {
+app.listen(3000, () => {
   console.log("Server started on port 3000");
 });
