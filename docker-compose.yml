@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: myappdb
     volumes:
-      - db_data:/var/lib/postgresql/data #! have default name take the name of docker compose project + name of volume
+      - db_data:/var/lib/postgresql/data #! have default name take the name of docker compose project + name of volumesadsadsa
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   db_data:
