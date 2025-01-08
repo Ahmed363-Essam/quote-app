@@ -2,7 +2,7 @@ services:
   web:
     build:
       context: ./server
-    container_name: express-app #! name of the container i will create from docker file in ./server
+    container_name: express-app #! name of the container i will create from docker file in ./server1231212332
     ports:
       - "3000:3000"  #! Map host port 8080 to container port 3000(express_app_one) that mean 123
     depends_on:
