@@ -40,20 +40,21 @@ spec:
 
 
 
+
         volumeMounts:
         - name: postgress-data
           mountPath: /var/lib/postgresql/data
 
-        - name: postgress-init
-          mountPath: /docker-entrypoint-initdb.d
+        # - name: postgress-init
+        #   mountPath: /docker-entrypoint-initdb.d
       
-      volumes: 
-      - name: postgress-init
-        configMap:
-          name: postgres-secret
-          items:
-            - key: init.sql  # Mount only the init.sql file
-              path: init.sql 
+      # volumes: 
+      # - name: postgress-init
+      #   configMap:
+      #     name: postgres-secret
+      #     items:
+      #       - key: init.sql  # Mount only the init.sql file
+      #         path: init.sql 
 
 
 

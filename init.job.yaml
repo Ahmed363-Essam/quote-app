@@ -1,0 +1,66 @@
+apiVersion: batch/v1
+
+kind: Job
+
+metadata:
+
+  name: postgress-init
+
+spec:
+
+  template:
+
+    spec:
+
+      containers:
+
+      - name: postgress-init-container
+
+        image: postgres:latest
+
+        env:
+
+        - name: POSTGRES_USER
+
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-secret
+              key: POSTGRES_DB
+
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+
+        - name: PGHOST
+          value: "db"  # Change this to the actual PostgreSQL service name
+        - name: PGPORT
+          value: "5432"
+
+
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Initializing PostgreSQL database...";
+          PGPASSWORD=${POSTGRES_PASSWORD} psql -h ${PGHOST} -U ${POSTGRES_USER} -d ${POSTGRES_DB} <<EOF
+          CREATE TABLE IF NOT EXISTS quotes (
+              id SERIAL PRIMARY KEY,
+              text TEXT,
+              author TEXT
+          );
+
+          INSERT INTO quotes (text, author) VALUES
+          ('من نام عن الصلاة أو نسيها فليصلها إذا ذكرها، لا كفارة لها إلا ذلك', ''),
+          ('الإتقان في العمل، فالله سيجازيك على تعبك، ولو بعد حين.', '-'),
+          ('لا تتوقف عن الإحسان، فالله سيطوع لك قلب من تحب.', '-'),
+          ('الذين آمنوا وتطمئن قلوبهم بذكر الله، اذكر ربك ليسكن قلبك وتتحصن ضد الأفكار السلبية.', ''),
+          ('أستغفر الله عدد خلقك ورضى نفسك وزنة عرشك ومداد كلماتك اللهم اغفر للمسلمين جميعا الأحياء منهم والأموات وأدخلهم جناتك، وأعزهم من عذابك.', '-');
+          EOF
+      restartPolicy: Never
